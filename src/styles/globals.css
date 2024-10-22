@@ -25,3 +25,14 @@ body {
     text-wrap: balance;
   }
 }
+
+/* ... autres styles ... */
+
+.presence-day::before {
+  content: '✓';
+  color: green;
+  position: absolute;
+  top: 0;
+  right: 0;
+  font-size: 1.2em;
+}

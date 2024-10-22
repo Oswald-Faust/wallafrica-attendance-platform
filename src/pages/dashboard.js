@@ -5,6 +5,7 @@ import { toast } from 'sonner';
 import { Clock, Calendar, CheckCircle, XCircle } from 'lucide-react';
 import Header from '@/components/Header';
 import { useRouter } from 'next/router';
+import EmployeeCalendar from '@/components/EmployeeCalendar';
 
 export default function Dashboard() {
   const router = useRouter();
@@ -14,6 +15,7 @@ export default function Dashboard() {
   const [timeString, setTimeString] = useState('');
   const [arrivalTime, setArrivalTime] = useState(null);
   const [departureTime, setDepartureTime] = useState(null);
+  const [userId, setUserId] = useState(null);
 
   useEffect(() => {
     checkAuth();
@@ -164,6 +166,9 @@ export default function Dashboard() {
               </div>
             </CardContent>
           </Card>
+        )}
+        {activeTab === 'planning' && (
+          <EmployeeCalendar userId={userId} />
         )}
         {/* Ajoutez d'autres contenus pour les autres onglets ici */}
       </main>

@@ -5,6 +5,8 @@ const tabs = [
   { id: 'users', label: 'Utilisateurs' },
   { id: 'stats', label: 'Statistiques' },
   { id: 'create-user', label: 'Créer un utilisateur' },
+  { id: 'create-event', label: 'Créer un programme' },
+  { id: 'calendar', label: 'Calendrier' },
 ];
 
 export default function AdminHeader({ activeTab, setActiveTab }) {

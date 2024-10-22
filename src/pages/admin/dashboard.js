@@ -4,11 +4,14 @@ import AdminHeader from '@/components/AdminHeader';
 import UserTable from '@/components/UserTable';
 import Statistics from '@/components/Statistics';
 import CreateUserForm from '@/components/CreateUserForm';
+import CreateEventForm from '@/components/CreateEventForm';
+import EmployeeCalendar from '@/components/EmployeeCalendar';
 
 export default function AdminDashboard() {
   const [activeTab, setActiveTab] = useState('users');
   const [users, setUsers] = useState([]);
   const [stats, setStats] = useState({});
+  const [selectedUserId, setSelectedUserId] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
   const router = useRouter();
@@ -75,6 +78,11 @@ export default function AdminDashboard() {
     }
   };
 
+  const handleUserSelect = (userId) => {
+    setSelectedUserId(userId);
+    setActiveTab('calendar');
+  };
+
   if (error) {
     return <div>{error}</div>;
   }
@@ -83,9 +91,13 @@ export default function AdminDashboard() {
     <div className="min-h-screen bg-gray-100">
       <AdminHeader activeTab={activeTab} setActiveTab={setActiveTab} />
       <main className="container mx-auto px-4 py-8">
-        {activeTab === 'users' && <UserTable users={users} />}
+        {activeTab === 'users' && <UserTable users={users} onUserSelect={handleUserSelect} />}
         {activeTab === 'stats' && <Statistics stats={stats} />}
         {activeTab === 'create-user' && <CreateUserForm onUserCreated={fetchUsers} />}
+        {activeTab === 'create-event' && <CreateEventForm onEventCreated={() => {}} />}
+        {activeTab === 'calendar' && selectedUserId && (
+          <EmployeeCalendar userId={selectedUserId} />
+        )}
       </main>
     </div>
   );
