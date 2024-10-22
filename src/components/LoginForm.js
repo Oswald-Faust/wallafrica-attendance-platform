@@ -22,13 +22,17 @@ const LoginForm = () => {
 
       if (res.ok) {
         localStorage.setItem('token', data.token);
-        router.push('/dashboard');
+        if (data.isAdmin) {
+          router.push('/admin/dashboard');
+        } else {
+          router.push('/dashboard');
+        }
       } else {
         setError(data.message || 'Une erreur est survenue lors de la connexion');
       }
     } catch (error) {
       console.error('Erreur de connexion:', error);
-      setError('Une erreur est survenue lors de la connexion. Veuillez réessayer.');
+      setError('Une erreur est survenue lors de la connexion');
     }
   };
 

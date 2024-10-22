@@ -1,16 +1,8 @@
-import { authMiddleware } from '@/middleware/auth';
-import User from '@/models/User';
+import { adminMiddleware } from '@/middleware/auth';
 
 async function handler(req, res) {
-  try {
-    const user = await User.findById(req.userId);
-    if (user.role !== 'admin') {
-      return res.status(403).json({ message: 'Accès non autorisé' });
-    }
-    res.status(200).json({ message: 'Authentification admin réussie' });
-  } catch (error) {
-    res.status(500).json({ message: 'Erreur serveur' });
-  }
+  // Si l'adminMiddleware passe, cela signifie que l'utilisateur est un admin
+  res.status(200).json({ message: 'Authentification admin réussie' });
 }
 
-export default authMiddleware(handler);
+export default adminMiddleware(handler);

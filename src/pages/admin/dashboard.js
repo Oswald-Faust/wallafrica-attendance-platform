@@ -9,31 +9,39 @@ export default function AdminDashboard() {
   const [activeTab, setActiveTab] = useState('users');
   const [users, setUsers] = useState([]);
   const [stats, setStats] = useState({});
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(null);
   const router = useRouter();
 
   useEffect(() => {
     checkAdminAuth();
-    fetchUsers();
-    fetchStats();
   }, []);
 
   const checkAdminAuth = async () => {
-    const token = localStorage.getItem('token');
-    if (!token) {
-      router.push('/login');
-      return;
-    }
-    
+    setIsLoading(true);
+    setError(null);
     try {
+      const token = localStorage.getItem('token');
+      if (!token) {
+        throw new Error('No token found');
+      }
+      
       const res = await fetch('/api/admin/check-auth', {
         headers: { 'Authorization': `Bearer ${token}` }
       });
       if (!res.ok) {
-        router.push('/dashboard');
+        throw new Error('Not authorized');
       }
+      
+      await fetchUsers();
+      await fetchStats();
+      setIsLoading(false);
     } catch (error) {
       console.error('Erreur de vérification d\'authentification:', error);
-      router.push('/dashboard');
+      setError('Vous n\'êtes pas autorisé à accéder à cette page.');
+      setIsLoading(false);
+      // Optionnel : rediriger après un court délai
+      // setTimeout(() => router.push('/dashboard'), 3000);
     }
   };
 
@@ -66,6 +74,10 @@ export default function AdminDashboard() {
       console.error('Erreur lors de la récupération des statistiques:', error);
     }
   };
+
+  if (error) {
+    return <div>{error}</div>;
+  }
 
   return (
     <div className="min-h-screen bg-gray-100">
