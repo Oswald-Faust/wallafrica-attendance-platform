@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Checkbox } from '@/components/ui/checkbox';
-import { Select } from '@/components/ui/select';
+import { Select, SelectTrigger, SelectContent, SelectItem, SelectValue } from '@/components/ui/select';
 import { toast } from 'sonner';
 
 export default function CreateEventForm({ onEventCreated }) {
@@ -97,12 +97,18 @@ export default function CreateEventForm({ onEventCreated }) {
         />
         <label htmlFor="isGlobal">Événement global</label>
       </div>
-      <Select
-        placeholder="Utilisateurs assignés"
-        value={assignedTo}
-        onChange={(e) => setAssignedTo(e.target.value)}
-        options={users.map(user => ({ value: user._id, label: user.fullName }))}
-      />
+      {!isGlobal && (
+        <Select value={assignedTo} onValueChange={setAssignedTo} multiple>
+          <SelectTrigger>
+            <SelectValue placeholder="Sélectionner des employés" />
+          </SelectTrigger>
+          <SelectContent>
+            {users.map(user => (
+              <SelectItem key={user._id} value={user._id}>{user.fullName}</SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+      )}
       <Button type="submit">Créer un événement</Button>
     </form>
   );

@@ -11,6 +11,8 @@
   "dependencies": {
     "@headlessui/react": "^2.1.10",
     "@heroicons/react": "^2.1.5",
+    "@radix-ui/react-checkbox": "^1.1.2",
+    "@radix-ui/react-select": "^2.1.2",
     "@shadcn/ui": "^0.0.4",
     "bcryptjs": "^2.4.3",
     "classnames": "^2.5.1",
