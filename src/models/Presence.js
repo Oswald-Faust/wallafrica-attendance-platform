@@ -13,12 +13,11 @@ const PresenceSchema = new mongoose.Schema({
   },
   arrivalTime: {
     type: String,
-    required: true,
   },
   departureTime: {
     type: String,
   },
-});
+}, { timestamps: true });
 
 // Supprimez tous les modèles existants pour s'assurer que le nouveau schéma est utilisé
 mongoose.models = {};

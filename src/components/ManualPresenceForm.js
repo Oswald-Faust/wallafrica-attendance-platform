@@ -1,17 +1,20 @@
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Select } from '@/components/ui/select';
 import { toast } from 'react-hot-toast';
 
-export default function ManualPresenceForm({ userId, userName, onClose }) {
+export default function ManualPresenceForm({ userId, userName, onPresenceUpdated }) {
   const [date, setDate] = useState('');
   const [arrivalTime, setArrivalTime] = useState('');
   const [departureTime, setDepartureTime] = useState('');
-  const [action, setAction] = useState('arrival');
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (!date || (!arrivalTime && !departureTime)) {
+      toast.error('Veuillez remplir la date et au moins une heure');
+      return;
+    }
+
     try {
       const token = localStorage.getItem('token');
       const response = await fetch('/api/admin/manual-presence', {
@@ -23,14 +26,20 @@ export default function ManualPresenceForm({ userId, userName, onClose }) {
         body: JSON.stringify({
           userId,
           date,
-          action,
-          time: action === 'arrival' ? arrivalTime : departureTime
+          arrivalTime,
+          departureTime
         }),
       });
 
       if (response.ok) {
+        const result = await response.json();
         toast.success('Présence enregistrée avec succès');
-        onClose();
+        setDate('');
+        setArrivalTime('');
+        setDepartureTime('');
+        if (onPresenceUpdated) {
+          onPresenceUpdated(result.presence);
+        }
       } else {
         const error = await response.json();
         toast.error(`Erreur: ${error.message}`);
@@ -43,7 +52,8 @@ export default function ManualPresenceForm({ userId, userName, onClose }) {
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
-      <h2 className="text-xl font-bold">Enregistrer la présence pour {userName}</h2>
+      <h2 className="text-xl font-bold mb-4">Enregistrement manuel pour {userName}</h2>
+      
       <div>
         <label htmlFor="date" className="block text-sm font-medium text-gray-700">Date</label>
         <Input
@@ -52,43 +62,33 @@ export default function ManualPresenceForm({ userId, userName, onClose }) {
           value={date}
           onChange={(e) => setDate(e.target.value)}
           required
+          className="mt-1"
         />
       </div>
+
       <div>
-        <label htmlFor="action" className="block text-sm font-medium text-gray-700">Action</label>
-        <Select
-          id="action"
-          value={action}
-          onChange={(e) => setAction(e.target.value)}
-        >
-          <option value="arrival">Arrivée</option>
-          <option value="departure">Départ</option>
-        </Select>
+        <label htmlFor="arrivalTime" className="block text-sm font-medium text-gray-700">Heure d'arrivée</label>
+        <Input
+          type="time"
+          id="arrivalTime"
+          value={arrivalTime}
+          onChange={(e) => setArrivalTime(e.target.value)}
+          className="mt-1"
+        />
       </div>
-      {action === 'arrival' ? (
-        <div>
-          <label htmlFor="arrivalTime" className="block text-sm font-medium text-gray-700">Heure d'arrivée</label>
-          <Input
-            type="time"
-            id="arrivalTime"
-            value={arrivalTime}
-            onChange={(e) => setArrivalTime(e.target.value)}
-            required
-          />
-        </div>
-      ) : (
-        <div>
-          <label htmlFor="departureTime" className="block text-sm font-medium text-gray-700">Heure de départ</label>
-          <Input
-            type="time"
-            id="departureTime"
-            value={departureTime}
-            onChange={(e) => setDepartureTime(e.target.value)}
-            required
-          />
-        </div>
-      )}
-      <Button type="submit">Enregistrer</Button>
+
+      <div>
+        <label htmlFor="departureTime" className="block text-sm font-medium text-gray-700">Heure de départ</label>
+        <Input
+          type="time"
+          id="departureTime"
+          value={departureTime}
+          onChange={(e) => setDepartureTime(e.target.value)}
+          className="mt-1"
+        />
+      </div>
+
+      <Button type="submit">Enregistrer la présence</Button>
     </form>
   );
 }
