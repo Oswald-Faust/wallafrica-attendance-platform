@@ -1,4 +1,5 @@
 import mongoose from 'mongoose';
+import bcrypt from 'bcryptjs';
 import { ADMIN_EMAIL } from '../config/admin';
 
 const UserSchema = new mongoose.Schema({
@@ -17,8 +18,12 @@ const UserSchema = new mongoose.Schema({
   },
   role: {
     type: String,
-    enum: ['Developer', 'UI/UX Designer', 'Graphic Designer', 'Illustrator', 'HR'],
+    enum: ['Developer', 'UI/UX Designer', 'Graphic Designer', 'Illustrator', 'HR', 'Visiteur'],
     default: 'Developer',
+  },
+  isVisitor: {
+    type: Boolean,
+    default: false,
   },
 }, { timestamps: true });
 
