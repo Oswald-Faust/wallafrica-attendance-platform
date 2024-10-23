@@ -1,21 +1,47 @@
-import React from 'react';
+import React, { useState } from 'react';
 
-export const Tabs = ({ children }) => <div>{children}</div>;
+export function Tabs({ children, defaultValue }) {
+  const [activeTab, setActiveTab] = useState(defaultValue);
 
-export const TabsList = ({ children }) => (
-  <div className="flex justify-around">{children}</div>
-);
+  return (
+    <div>
+      {React.Children.map(children, (child) => {
+        if (child.type === TabsList) {
+          return React.cloneElement(child, { activeTab, setActiveTab });
+        }
+        if (child.type === TabsContent) {
+          return child.props.value === activeTab ? child : null;
+        }
+        return child;
+      })}
+    </div>
+  );
+}
 
-export const TabsTrigger = ({ value, onClick, activeTab }) => (
-  <button
-    className={`p-2 ${activeTab === value ? 'bg-gray-300' : ''}`}
-    onClick={() => onClick(value)}
-  >
-    {value}
-  </button>
-);
+export function TabsList({ children, activeTab, setActiveTab }) {
+  return (
+    <div className="flex">
+      {React.Children.map(children, (child) => {
+        return React.cloneElement(child, {
+          isActive: child.props.value === activeTab,
+          onClick: () => setActiveTab(child.props.value),
+        });
+      })}
+    </div>
+  );
+}
 
-export const TabsContent = ({ value, activeTab, children }) => {
-  if (value !== activeTab) return null;
-  return <div className="p-4">{children}</div>;
-};
+export function TabsTrigger({ children, value, isActive, onClick }) {
+  return (
+    <button
+      className={`p-2 ${isActive ? 'bg-gray-300' : ''}`}
+      onClick={onClick}
+    >
+      {children}
+    </button>
+  );
+}
+
+export function TabsContent({ children, value }) {
+  return <div>{children}</div>;
+}

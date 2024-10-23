@@ -7,7 +7,7 @@ async function handler(req, res) {
   try {
     const presenceHistory = await Presence.find({ userId })
       .sort({ date: -1 })
-      .limit(30);
+      .limit(30); // Limite à 30 jours pour l'exemple, ajustez selon vos besoins
 
     res.status(200).json({ presenceHistory });
   } catch (error) {
