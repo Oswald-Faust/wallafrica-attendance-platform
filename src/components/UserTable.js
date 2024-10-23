@@ -1,30 +1,52 @@
+import { useState } from 'react';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
+import { Button } from '@/components/ui/button';
+import UserPresenceHistory from './UserPresenceHistory';
 
 export default function UserTable({ users }) {
+  const [selectedUser, setSelectedUser] = useState(null);
+
+  const openHistoryModal = (user) => {
+    setSelectedUser(user);
+  };
+
+  const closeHistoryModal = () => {
+    setSelectedUser(null);
+  };
+
   return (
-    <Table>
-      <TableHeader>
-        <TableRow>
-          <TableHead>Nom</TableHead>
-          <TableHead>Email</TableHead>
-          <TableHead>Rôle</TableHead>
-          <TableHead>Dernière présence</TableHead>
-          <TableHead>Heure d&apos;arrivée</TableHead>
-          <TableHead>Heure de départ</TableHead>
-        </TableRow>
-      </TableHeader>
-      <TableBody>
-        {users.map((user) => (
-          <TableRow key={user._id}>
-            <TableCell>{user.fullName}</TableCell>
-            <TableCell>{user.email}</TableCell>
-            <TableCell>{user.role}</TableCell>
-            <TableCell>{user.lastPresence?.date}</TableCell>
-            <TableCell>{user.lastPresence?.arrivalTime}</TableCell>
-            <TableCell>{user.lastPresence?.departureTime}</TableCell>
+    <div>
+      <Table>
+        <TableHeader>
+          <TableRow>
+            <TableHead>Nom</TableHead>
+            <TableHead>Email</TableHead>
+            <TableHead>Rôle</TableHead>
+            <TableHead>Actions</TableHead>
           </TableRow>
-        ))}
-      </TableBody>
-    </Table>
+        </TableHeader>
+        <TableBody>
+          {users.map((user) => (
+            <TableRow key={user._id}>
+              <TableCell>{user.fullName}</TableCell>
+              <TableCell>{user.email}</TableCell>
+              <TableCell>{user.role}</TableCell>
+              <TableCell>
+                <Button onClick={() => openHistoryModal(user)}>Voir l'historique</Button>
+              </TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
+
+      {selectedUser && (
+        <UserPresenceHistory
+          userId={selectedUser._id}
+          userName={selectedUser.fullName}
+          isOpen={!!selectedUser}
+          onClose={closeHistoryModal}
+        />
+      )}
+    </div>
   );
 }

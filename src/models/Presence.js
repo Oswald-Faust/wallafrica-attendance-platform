@@ -3,7 +3,8 @@ import mongoose from 'mongoose';
 
 const PresenceSchema = new mongoose.Schema({
   userId: {
-    type: String,
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User',
     required: true,
   },
   date: {
@@ -22,6 +23,4 @@ const PresenceSchema = new mongoose.Schema({
 // Supprimez tous les modèles existants pour s'assurer que le nouveau schéma est utilisé
 mongoose.models = {};
 
-const Presence = mongoose.model('Presence', PresenceSchema);
-
-export default Presence;
+export default mongoose.models.Presence || mongoose.model('Presence', PresenceSchema);
