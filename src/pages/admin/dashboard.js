@@ -8,7 +8,9 @@ import CreateEventForm from '@/components/CreateEventForm';
 import EmployeeCalendar from '@/components/EmployeeCalendar';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import AdminCalendar from '@/components/AdminCalendar';
-import AdminLeaveRequests from '@/components/AdminLeaveRequests';
+import { Button } from '@/components/ui/button';
+import { Modal } from '@/components/ui/Modal';
+import LeaveRequestsManager from '@/components/LeaveRequestsManager';
 
 export default function AdminDashboard() {
   const [activeTab, setActiveTab] = useState('users');
@@ -18,6 +20,9 @@ export default function AdminDashboard() {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
   const router = useRouter();
+  const [showLeaveRequests, setShowLeaveRequests] = useState(false);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [showCreateUser, setShowCreateUser] = useState(false);
 
   useEffect(() => {
     checkAdminAuth();
@@ -94,12 +99,26 @@ export default function AdminDashboard() {
     <div className="min-h-screen bg-gray-100">
       <AdminHeader activeTab={activeTab} setActiveTab={setActiveTab} />
       <main className="container mx-auto px-4 py-8">
+        <h1 className="text-3xl font-bold mb-6">Tableau de bord administrateur</h1>
+        
         {activeTab === 'users' && <UserTable users={users} onUserSelect={handleUserSelect} />}
         {activeTab === 'stats' && <Statistics stats={stats} />}
         {activeTab === 'create-user' && <CreateUserForm onUserCreated={fetchUsers} />}
         {activeTab === 'create-event' && <CreateEventForm onEventCreated={() => {}} />}
         {activeTab === 'calendar' && <AdminCalendar />}
         {activeTab === 'leave-requests' && <AdminLeaveRequests />}
+        
+        <div className="flex space-x-4 mb-6">
+          <Button onClick={() => setShowLeaveRequests(true)}>Voir les permissions</Button>
+        </div>
+
+        <Modal isOpen={showLeaveRequests} onClose={() => setShowLeaveRequests(false)}>
+          <h2 className="text-2xl font-bold mb-4">Demandes de permissions</h2>
+          <LeaveRequestsManager />
+          <div className="mt-4 flex justify-end">
+            <Button onClick={() => setShowLeaveRequests(false)}>Fermer</Button>
+          </div>
+        </Modal>
       </main>
     </div>
   );
