@@ -5,23 +5,23 @@ const EventSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  start: {
+  startDate: {
     type: Date,
     required: true,
   },
-  end: {
+  endDate: {
     type: Date,
     required: true,
+  },
+  allDay: {
+    type: Boolean,
+    default: false,
+  },
+  color: {
+    type: String,
+    default: '#3174ad',
   },
   description: String,
-  assignedTo: [{
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'User'
-  }],
-  isGlobal: {
-    type: Boolean,
-    default: false
-  }
-});
+}, { timestamps: true });
 
 export default mongoose.models.Event || mongoose.model('Event', EventSchema);

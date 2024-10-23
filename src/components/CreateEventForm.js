@@ -1,64 +1,56 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Checkbox } from '@/components/ui/checkbox';
-import { Select, SelectTrigger, SelectContent, SelectItem, SelectValue } from '@/components/ui/select';
-import { toast } from 'sonner';
+import { toast } from 'react-hot-toast';
 
 export default function CreateEventForm({ onEventCreated }) {
   const [title, setTitle] = useState('');
-  const [start, setStart] = useState('');
-  const [end, setEnd] = useState('');
+  const [startDate, setStartDate] = useState('');
+  const [endDate, setEndDate] = useState('');
+  const [allDay, setAllDay] = useState(false);
+  const [color, setColor] = useState('#3174ad');
   const [description, setDescription] = useState('');
-  const [isGlobal, setIsGlobal] = useState(false);
-  const [assignedTo, setAssignedTo] = useState([]);
-  const [users, setUsers] = useState([]);
-
-  useEffect(() => {
-    fetchUsers();
-  }, []);
-
-  const fetchUsers = async () => {
-    try {
-      const res = await fetch('/api/admin/users', {
-        headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
-      });
-      if (res.ok) {
-        const data = await res.json();
-        setUsers(data.users);
-      }
-    } catch (error) {
-      console.error('Erreur lors de la récupération des utilisateurs:', error);
-    }
-  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const res = await fetch('/api/admin/events', {
+      const response = await fetch('/api/admin/events', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${localStorage.getItem('token')}`
         },
-        body: JSON.stringify({ title, start, end, description, assignedTo, isGlobal }),
+        body: JSON.stringify({
+          title,
+          startDate,
+          endDate,
+          allDay,
+          color,
+          description
+        }),
       });
 
-      if (res.ok) {
+      if (response.ok) {
+        const result = await response.json();
         toast.success('Événement créé avec succès');
+        if (onEventCreated) {
+          onEventCreated(result.event);
+        }
+        // Réinitialiser le formulaire
         setTitle('');
-        setStart('');
-        setEnd('');
+        setStartDate('');
+        setEndDate('');
+        setAllDay(false);
+        setColor('#3174ad');
         setDescription('');
-        setIsGlobal(false);
-        setAssignedTo([]);
-        if (onEventCreated) onEventCreated();
       } else {
-        toast.error('Erreur lors de la création de l\'événement');
+        const error = await response.json();
+        toast.error(`Erreur: ${error.message}`);
       }
     } catch (error) {
       console.error('Erreur lors de la création de l\'événement:', error);
-      toast.error('Erreur lors de la création de l\'événement');
+      toast.error('Une erreur est survenue');
     }
   };
 
@@ -66,50 +58,43 @@ export default function CreateEventForm({ onEventCreated }) {
     <form onSubmit={handleSubmit} className="space-y-4">
       <Input
         type="text"
-        placeholder="Titre de l'événement"
         value={title}
         onChange={(e) => setTitle(e.target.value)}
+        placeholder="Titre de l'événement"
         required
       />
       <Input
         type="datetime-local"
-        value={start}
-        onChange={(e) => setStart(e.target.value)}
+        value={startDate}
+        onChange={(e) => setStartDate(e.target.value)}
         required
       />
       <Input
         type="datetime-local"
-        value={end}
-        onChange={(e) => setEnd(e.target.value)}
+        value={endDate}
+        onChange={(e) => setEndDate(e.target.value)}
         required
+      />
+      <div className="flex items-center">
+        <Checkbox
+          id="allDay"
+          checked={allDay}
+          onCheckedChange={setAllDay}
+        />
+        <label htmlFor="allDay" className="ml-2">Toute la journée</label>
+      </div>
+      <Input
+        type="color"
+        value={color}
+        onChange={(e) => setColor(e.target.value)}
       />
       <textarea
-        placeholder="Description"
         value={description}
         onChange={(e) => setDescription(e.target.value)}
-        className="w-full p-2 border border-gray-300 rounded"
+        placeholder="Description"
+        className="w-full p-2 border rounded"
       />
-      <div className="flex items-center space-x-2">
-        <Checkbox
-          id="isGlobal"
-          checked={isGlobal}
-          onCheckedChange={setIsGlobal}
-        />
-        <label htmlFor="isGlobal">Événement global</label>
-      </div>
-      {!isGlobal && (
-        <Select value={assignedTo} onValueChange={setAssignedTo} multiple>
-          <SelectTrigger>
-            <SelectValue placeholder="Sélectionner des employés" />
-          </SelectTrigger>
-          <SelectContent>
-            {users.map(user => (
-              <SelectItem key={user._id} value={user._id}>{user.fullName}</SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
-      )}
-      <Button type="submit">Créer un événement</Button>
+      <Button type="submit">Créer l'événement</Button>
     </form>
   );
 }

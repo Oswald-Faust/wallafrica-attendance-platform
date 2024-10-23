@@ -18,10 +18,32 @@ export default function EmployeeCalendar({ userId }) {
 
   const fetchEvents = async () => {
     try {
-      const res = await fetch(`/api/events/${userId}`);
-      if (res.ok) {
-        const data = await res.json();
-        setEvents(data.events);
+      const [userEventsRes, adminEventsRes] = await Promise.all([
+        userId ? fetch(`/api/events/${userId}`) : Promise.resolve({ ok: true, json: () => ({ events: [] }) }),
+        fetch('/api/admin/events')
+      ]);
+      
+      if (userEventsRes.ok && adminEventsRes.ok) {
+        const userEventsData = await userEventsRes.json();
+        const adminEventsData = await adminEventsRes.json();
+        
+        // Combiner et formater les événements
+        const allEvents = [
+          ...userEventsData.events.map(event => ({
+            ...event,
+            start: new Date(event.startDate),
+            end: new Date(event.endDate),
+            isUserEvent: true
+          })),
+          ...adminEventsData.events.map(event => ({
+            ...event,
+            start: new Date(event.startDate),
+            end: new Date(event.endDate),
+            isAdminEvent: true
+          }))
+        ];
+        
+        setEvents(allEvents);
       }
     } catch (error) {
       console.error('Erreur lors de la récupération des événements:', error);
@@ -29,6 +51,10 @@ export default function EmployeeCalendar({ userId }) {
   };
 
   const fetchPresenceDates = async () => {
+    if (!userId) {
+      setPresenceDates([]);
+      return;
+    }
     try {
       const res = await fetch(`/api/presence/dates/${userId}`);
       if (res.ok) {
@@ -40,9 +66,9 @@ export default function EmployeeCalendar({ userId }) {
     }
   };
 
-  const eventStyleGetter = (event, start, end, isSelected) => {
+  const eventStyleGetter = (event) => {
     const style = {
-      backgroundColor: '#3174ad',
+      backgroundColor: event.isAdminEvent ? '#3174ad' : '#28a745',
       borderRadius: '0px',
       opacity: 0.8,
       color: 'white',

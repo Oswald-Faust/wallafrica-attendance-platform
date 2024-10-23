@@ -6,6 +6,7 @@ import { Clock, Calendar, CheckCircle, XCircle } from 'lucide-react';
 import Header from '@/components/Header';
 import { useRouter } from 'next/router';
 import EmployeeCalendar from '@/components/EmployeeCalendar';
+import LeaveRequestForm from '@/components/LeaveRequestForm';
 
 export default function Dashboard() {
   const router = useRouter();
@@ -169,6 +170,11 @@ export default function Dashboard() {
         )}
         {activeTab === 'planning' && (
           <EmployeeCalendar userId={userId} />
+        )}
+        {activeTab === 'conges' && (
+          <LeaveRequestForm userId={userId} onRequestSubmitted={() => {
+            // Rafraîchir les données si nécessaire
+          }} />
         )}
         {/* Ajoutez d'autres contenus pour les autres onglets ici */}
       </main>

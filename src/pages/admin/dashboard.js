@@ -6,6 +6,9 @@ import Statistics from '@/components/Statistics';
 import CreateUserForm from '@/components/CreateUserForm';
 import CreateEventForm from '@/components/CreateEventForm';
 import EmployeeCalendar from '@/components/EmployeeCalendar';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import AdminCalendar from '@/components/AdminCalendar';
+import AdminLeaveRequests from '@/components/AdminLeaveRequests';
 
 export default function AdminDashboard() {
   const [activeTab, setActiveTab] = useState('users');
@@ -95,9 +98,8 @@ export default function AdminDashboard() {
         {activeTab === 'stats' && <Statistics stats={stats} />}
         {activeTab === 'create-user' && <CreateUserForm onUserCreated={fetchUsers} />}
         {activeTab === 'create-event' && <CreateEventForm onEventCreated={() => {}} />}
-        {activeTab === 'calendar' && selectedUserId && (
-          <EmployeeCalendar userId={selectedUserId} />
-        )}
+        {activeTab === 'calendar' && <AdminCalendar />}
+        {activeTab === 'leave-requests' && <AdminLeaveRequests />}
       </main>
     </div>
   );
