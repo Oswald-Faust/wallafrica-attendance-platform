@@ -39,16 +39,16 @@ const LoginForm = () => {
   };
 
   return (
-    <div className="flex h-screen bg-purple-100">
-      <div className="w-1/2 flex items-center justify-center">
+    <div className="flex flex-col lg:flex-row h-screen bg-purple-100">
+      <div className="w-full lg:w-1/2 flex items-center justify-center p-4 lg:p-0">
         <motion.div
-          initial={{ opacity: 0, x: -50 }}
-          animate={{ opacity: 1, x: 0 }}
+          initial={{ opacity: 0, y: 50 }}
+          animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
           className="bg-white p-8 rounded-lg shadow-2xl w-full max-w-md"
         >
-          <h1 className="text-3xl font-bold mb-6 text-center text-purple-800">Log In</h1>
-          <p className="text-center text-gray-600 mb-6">Welcome back! Please enter your details</p>
+          <h1 className="text-2xl lg:text-3xl font-bold mb-4 lg:mb-6 text-center text-purple-800">Log In</h1>
+          <p className="text-center text-gray-600 mb-4 lg:mb-6">Welcome back! Please enter your details</p>
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
               <label htmlFor="email" className="block text-sm font-medium text-gray-700">
@@ -140,14 +140,16 @@ const LoginForm = () => {
           </p>
         </motion.div>
       </div>
-      <div className="w-1/2 bg-purple-600 flex items-center justify-center">
-        <Image
-          src="/public/wall_time.jpeg"
-          alt="Wall Image"
-          width={500}
-          height={500}
-          className="object-cover rounded-lg shadow-xl"
-        />
+      <div className="hidden lg:block w-full lg:w-1/2 bg-purple-600">
+        <div className="h-full flex items-center justify-center">
+          <Image
+            src="/working.png"
+            alt="Working man"
+            width={500}
+            height={500}
+            className="object-cover rounded-lg shadow-xl"
+          />
+        </div>
       </div>
     </div>
   );
