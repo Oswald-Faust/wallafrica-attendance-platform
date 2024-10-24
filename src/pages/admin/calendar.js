@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Calendar } from '@/components/ui/calendar';
+import { Calendar } from 'react-big-calendar';
 import { Card, CardContent } from '@/components/ui/card';
 import { Select } from '@/components/ui/select';
 import { Button } from '@/components/ui/button';
