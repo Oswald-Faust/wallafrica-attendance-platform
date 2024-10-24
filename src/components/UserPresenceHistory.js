@@ -33,14 +33,14 @@ export default function UserPresenceHistory({ userId }) {
     }
   };
 
-  if (isLoading) return <p>Chargement de l'historique...</p>;
+  if (isLoading) return <p>Chargement de l&apos;historique...</p>;
 
   return (
     <Table>
       <TableHeader>
         <TableRow>
           <TableHead>Date</TableHead>
-          <TableHead>Heure d'arrivée</TableHead>
+          <TableHead>Heure d&apos;arrivée</TableHead>
           <TableHead>Heure de départ</TableHead>
         </TableRow>
       </TableHeader>

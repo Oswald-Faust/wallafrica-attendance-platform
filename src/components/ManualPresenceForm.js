@@ -67,7 +67,7 @@ export default function ManualPresenceForm({ userId, userName, onPresenceUpdated
       </div>
 
       <div>
-        <label htmlFor="arrivalTime" className="block text-sm font-medium text-gray-700">Heure d'arrivée</label>
+        <label htmlFor="arrivalTime" className="block text-sm font-medium text-gray-700">Heure d&apos;arrivée</label>
         <Input
           type="time"
           id="arrivalTime"

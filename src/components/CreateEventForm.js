@@ -94,7 +94,7 @@ export default function CreateEventForm({ onEventCreated }) {
         placeholder="Description"
         className="w-full p-2 border rounded"
       />
-      <Button type="submit">Créer l'événement</Button>
+      <Button type="submit">Créer l&apos;événement</Button>
     </form>
   );
 }
