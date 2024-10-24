@@ -6,6 +6,7 @@ import UserProfile from './UserProfile';
 import CreateUserForm from './CreateUserForm';
 import Modal from './Modal';
 import { PlusCircle, Search } from 'lucide-react';
+import { motion } from 'framer-motion';
 
 export default function UserTable({ initialUsers = [] }) {
   const [users, setUsers] = useState(initialUsers);
@@ -89,6 +90,7 @@ export default function UserTable({ initialUsers = [] }) {
 
   const handleUserCreated = (newUser) => {
     setUsers([...users, newUser]);
+    setFilteredUsers([...users, newUser]);
     closeCreateUserModal();
   };
 
@@ -99,7 +101,40 @@ export default function UserTable({ initialUsers = [] }) {
   };
 
   if (isLoading) {
-    return <div>Chargement des utilisateurs...</div>;
+    return (
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.5 }}
+        className="flex flex-col justify-center items-center h-64"
+      >
+        <motion.div className="flex space-x-2 mb-4">
+          {[0, 1, 2].map((index) => (
+            <motion.div
+              key={index}
+              className="w-4 h-4 bg-indigo-600 rounded-full"
+              animate={{
+                scale: [1, 1.2, 1],
+                opacity: [1, 0.5, 1],
+              }}
+              transition={{
+                duration: 1,
+                repeat: Infinity,
+                delay: index * 0.2,
+              }}
+            />
+          ))}
+        </motion.div>
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.5 }}
+          className="text-lg font-medium text-gray-600"
+        >
+          Chargement des utilisateurs...
+        </motion.div>
+      </motion.div>
+    );
   }
 
   return (
@@ -110,12 +145,11 @@ export default function UserTable({ initialUsers = [] }) {
           className="w-full sm:w-auto bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700 text-white font-bold py-2 px-4 rounded-full shadow-lg transform transition duration-200 hover:scale-105"
         >
           <PlusCircle className="w-5 h-5 mr-2" />
-          Créer un utilisateur
         </Button>
 
         <div className="relative w-full sm:w-96">
           <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
-          <Input
+          <Input 
             type="text"
             placeholder="Rechercher un utilisateur..."
             value={searchTerm}
@@ -132,7 +166,7 @@ export default function UserTable({ initialUsers = [] }) {
               <TableHead>Nom</TableHead>
               <TableHead>Email</TableHead>
               <TableHead>Rôle</TableHead>
-              <TableHead>Heure d'arrivée</TableHead>
+              <TableHead>Heure d n&apos;avezarrivée</TableHead>
               <TableHead>Heure de départ</TableHead>
               <TableHead>Actions</TableHead>
             </TableRow>
@@ -158,7 +192,7 @@ export default function UserTable({ initialUsers = [] }) {
           </TableBody>
         </Table>
       ) : (
-        <div className="text-center text-gray-500">Aucun utilisateur trouvé.</div>
+        <div className="text-center text-gray-500">Aucun utilisateur trouvé</div>
       )}
 
       <Modal isOpen={!!selectedUser} onClose={closeUserProfile}>

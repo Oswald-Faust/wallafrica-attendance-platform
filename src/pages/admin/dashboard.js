@@ -99,11 +99,9 @@ export default function AdminDashboard() {
     <div className="min-h-screen bg-gray-100">
       <AdminHeader activeTab={activeTab} setActiveTab={setActiveTab} />
       <main className="container mx-auto px-4 py-8">
-        <h1 className="text-3xl font-bold mb-6">Tableau de bord administrateur</h1>
         
         {activeTab === 'users' && <UserTable users={users} onUserSelect={handleUserSelect} />}
         {activeTab === 'stats' && <Statistics stats={stats} />}
-        {activeTab === 'create-user' && <CreateUserForm onUserCreated={fetchUsers} />}
         {activeTab === 'create-event' && <CreateEventForm onEventCreated={() => {}} />}
         {activeTab === 'calendar' && <AdminCalendar />}
         {activeTab === 'leave-requests' && <AdminLeaveRequests />}

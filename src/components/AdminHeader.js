@@ -4,7 +4,6 @@ import { useRouter } from 'next/router';
 const tabs = [
   { id: 'users', label: 'Utilisateurs' },
   { id: 'stats', label: 'Statistiques' },
-  { id: 'create-user', label: 'Créer un utilisateur' },
   { id: 'create-event', label: 'Créer un programme' },
   { id: 'calendar', label: 'Calendrier' },
 ];

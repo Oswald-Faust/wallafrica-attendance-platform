@@ -28,7 +28,7 @@ const RegisterForm = () => {
   };
 
   return (
-    <div className="flex flex-col lg:flex-row h-screen bg-purple-100">
+    <div className="flex flex-col lg:flex-row h-screen ">
       <div className="w-full lg:w-1/2 flex items-center justify-center p-4 lg:p-0">
         <motion.div
           initial={{ opacity: 0, y: 50 }}
@@ -36,12 +36,12 @@ const RegisterForm = () => {
           transition={{ duration: 0.5 }}
           className="bg-white p-8 rounded-lg shadow-2xl w-full max-w-md"
         >
-          <h1 className="text-2xl lg:text-3xl font-bold mb-4 lg:mb-6 text-center text-purple-800">Sign Up</h1>
-          <p className="text-center text-gray-600 mb-4 lg:mb-6">Create an account to get started</p>
+          <h1 className="text-2xl lg:text-3xl font-bold mb-4 lg:mb-6 text-center text-purple-800">Bienvenue !</h1>
+          <p className="text-center text-gray-600 mb-4 lg:mb-6">Créez votre compte pour commencer</p>
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
               <label htmlFor="fullName" className="block text-sm font-medium text-gray-700">
-                Full Name
+                Votre nom
               </label>
               <input
                 id="fullName"
@@ -80,7 +80,7 @@ const RegisterForm = () => {
             </div>
             <div>
               <label htmlFor="role" className="block text-sm font-medium text-gray-700">
-                Role
+                Votre poste
               </label>
               <select
                 id="role"
@@ -89,7 +89,7 @@ const RegisterForm = () => {
                 required
                 className="mt-1 block w-full px-3 py-2 bg-gray-50 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-purple-500 focus:border-purple-500"
               >
-                <option value="">Select a role</option>
+                <option value="">Sélectionner votre poste</option>
                 <option value="Developer">Developer</option>
                 <option value="UI/UX Designer">UI/UX Designer</option>
                 <option value="Graphic Designer">Graphic Designer</option>
@@ -104,21 +104,21 @@ const RegisterForm = () => {
               type="submit"
               className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-purple-600 hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500"
             >
-              Sign Up
+              Créer un compte
             </motion.button>
           </form>
           <p className="mt-4 text-center text-sm text-gray-600">
-            Already have an account?{' '}
+            Déjà un compte{' '}
             <Link href="/login" className="font-medium text-purple-600 hover:text-purple-500">
-              Log in
+              Se connecter
             </Link>
           </p>
         </motion.div>
       </div>
-      <div className="hidden lg:block w-full lg:w-1/2 bg-purple-600">
+      <div className="hidden lg:block w-full lg:w-1/2">
         <div className="h-full flex items-center justify-center">
           <Image
-            src="/worked.png"
+            src="/design.avif"
             alt="Worked man"
             width={500}
             height={500}
