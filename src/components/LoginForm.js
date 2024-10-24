@@ -142,7 +142,7 @@ const LoginForm = () => {
       </div>
       <div className="w-1/2 bg-purple-600 flex items-center justify-center">
         <Image
-          src="/path-wall.jpg"
+          src="/public/wall_time.jpeg"
           alt="Wall Image"
           width={500}
           height={500}
