@@ -12,6 +12,7 @@ import { Button } from '@/components/ui/button';
 import { Modal } from '@/components/ui/Modal';
 import LeaveRequestsManager from '@/components/LeaveRequestsManager';
 import { toast } from 'react-toastify';
+import AdminLeaveRequests from '@/components/AdminLeaveRequests';
 
 export default function AdminDashboard() {
   const [activeTab, setActiveTab] = useState('users');
