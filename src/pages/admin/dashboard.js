@@ -11,6 +11,7 @@ import AdminCalendar from '@/components/AdminCalendar';
 import { Button } from '@/components/ui/button';
 import { Modal } from '@/components/ui/Modal';
 import LeaveRequestsManager from '@/components/LeaveRequestsManager';
+import { toast } from 'react-toastify';
 
 export default function AdminDashboard() {
   const [activeTab, setActiveTab] = useState('users');
@@ -102,21 +103,18 @@ export default function AdminDashboard() {
         
         {activeTab === 'users' && <UserTable users={users} onUserSelect={handleUserSelect} />}
         {activeTab === 'stats' && <Statistics stats={stats} />}
-        {activeTab === 'create-event' && <CreateEventForm onEventCreated={() => {}} />}
+        {activeTab === 'create-event' && (
+          <div className="mt-6">
+            <CreateEventForm onEventCreated={() => {
+              toast.success('Événement créé avec succès');
+              // Vous pouvez ajouter ici une logique pour rafraîchir les données si nécessaire
+            }} />
+          </div>
+        )}
         {activeTab === 'calendar' && <AdminCalendar />}
         {activeTab === 'leave-requests' && <AdminLeaveRequests />}
         
-        <div className="flex space-x-4 mb-6">
-          <Button onClick={() => setShowLeaveRequests(true)}>Voir les permissions</Button>
-        </div>
-
-        <Modal isOpen={showLeaveRequests} onClose={() => setShowLeaveRequests(false)}>
-          <h2 className="text-2xl font-bold mb-4">Demandes de permissions</h2>
-          <LeaveRequestsManager />
-          <div className="mt-4 flex justify-end">
-            <Button onClick={() => setShowLeaveRequests(false)}>Fermer</Button>
-          </div>
-        </Modal>
+     
       </main>
     </div>
   );

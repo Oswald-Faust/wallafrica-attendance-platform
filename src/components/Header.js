@@ -6,7 +6,7 @@ import { useRouter } from 'next/router';
 const tabs = [
   { id: 'presence', label: 'Présence' },
   { id: 'planning', label: 'Planning' },
-  { id: 'conges', label: 'Congés' },
+  { id: 'conges', label: 'Permissions' },
 ];
 
 export default function Header({ activeTab, setActiveTab }) {

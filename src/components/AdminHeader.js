@@ -20,7 +20,7 @@ export default function AdminHeader({ activeTab, setActiveTab }) {
     <header className="bg-white shadow-md">
       <div className="container mx-auto px-4 py-4">
         <div className="flex justify-between items-center">
-          <h1 className="text-2xl font-bold text-gray-800">Dashboard Admin</h1>
+          <h1 className="text-2xl font-bold text-gray-800">Bienvenue Marquise !</h1>
           <Button onClick={handleLogout}>Déconnexion</Button>
         </div>
         <nav className="mt-4">

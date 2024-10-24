@@ -7,6 +7,7 @@ import CreateUserForm from './CreateUserForm';
 import Modal from './Modal';
 import { PlusCircle, Search } from 'lucide-react';
 import { motion } from 'framer-motion';
+import LeaveRequestsManager from '@/components/LeaveRequestsManager';
 
 export default function UserTable({ initialUsers = [] }) {
   const [users, setUsers] = useState(initialUsers);
@@ -16,6 +17,7 @@ export default function UserTable({ initialUsers = [] }) {
   const [isLoading, setIsLoading] = useState(!initialUsers.length);
   const [todayPresences, setTodayPresences] = useState({});
   const [searchTerm, setSearchTerm] = useState('');
+  const [showLeaveRequests, setShowLeaveRequests] = useState(false);
 
   useEffect(() => {
     if (!initialUsers.length) {
@@ -157,6 +159,16 @@ export default function UserTable({ initialUsers = [] }) {
             className="pl-10 pr-4 py-2 w-full rounded-full border-gray-300 focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
           />
         </div>
+        <div className="flex space-x-4 ">
+          <Button onClick={() => setShowLeaveRequests(true)}>Voir les permissions</Button>
+        </div>
+        <Modal isOpen={showLeaveRequests} onClose={() => setShowLeaveRequests(false)}>
+          <h2 className="text-2xl font-bold mb-4">Demandes de permissions</h2>
+          <LeaveRequestsManager />
+          <div className="mt-4 flex justify-end">
+            <Button onClick={() => setShowLeaveRequests(false)}>Fermer</Button>
+          </div>
+        </Modal>
       </div>
 
       {filteredUsers.length > 0 ? (
